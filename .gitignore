@@ -22,6 +22,23 @@ dist-ssr/
 !.vscode/extensions.json
 .idea
 .DS_Store
+
+# Local AI / Claude Code settings
+.claude/
+.cursor/
+.windsurf/
+
+# Test coverage
+coverage/
+
+# Vite cache
+.vite/
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# OS
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
