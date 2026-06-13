@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes App — Architecture Diagram</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #1a1a1a;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    h1 {
+      color: #a0c4ff;
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
+    }
+    .subtitle {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+    .mermaid {
+      background: #2a2a2a;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 2rem;
+      max-width: 900px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Notes App — Architecture Diagram</h1>
+  <p class="subtitle">React 19 + TypeScript + Vite + JSON Server</p>
+
+  <div class="mermaid">
+graph TD
+  subgraph Entry["진입점"]
+    main["main.tsx"]
+  end
+
+  subgraph App["앱 루트"]
+    App_tsx["App.tsx<br/>(selectedNoteId, isCreating)"]
+  end
+
+  subgraph Context["전역 상태"]
+    NotesContext["NotesContext.tsx<br/>(notes[], loading, error)"]
+  end
+
+  subgraph Components["UI 컴포넌트"]
+    Layout["Layout.tsx"]
+    NoteList["NoteList.tsx"]
+    NoteEditor["NoteEditor.tsx"]
+    NoteItem["NoteItem.tsx"]
+  end
+
+  subgraph API["API 레이어"]
+    notes_api["api/notes.ts<br/>(fetch CRUD)"]
+  end
+
+  subgraph Types["타입 정의"]
+    note_type["types/note.ts<br/>(Note 인터페이스)"]
+  end
+
+  subgraph Server["백엔드"]
+    json_server[("JSON Server<br/>db.json<br/>:3001/notes")]
+  end
+
+  main --> App_tsx
+  App_tsx --> NotesContext
+  App_tsx --> Layout
+  App_tsx --> NoteList
+  App_tsx --> NoteEditor
+
+  NoteList --> NotesContext
+  NoteEditor --> NotesContext
+
+  NotesContext --> notes_api
+  NotesContext --> note_type
+
+  notes_api --> note_type
+  notes_api --> json_server
+
+  NoteItem --> note_type
+  NoteList -.->|렌더링| NoteItem
+
+  style Entry fill:#2d3748,stroke:#4a5568
+  style App fill:#2d4a3e,stroke:#48bb78
+  style Context fill:#3d2d4a,stroke:#9f7aea
+  style Components fill:#2d3d4a,stroke:#63b3ed
+  style API fill:#4a3d2d,stroke:#ed8936
+  style Types fill:#3d3d2d,stroke:#ecc94b
+  style Server fill:#3d2d2d,stroke:#fc8181
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#2a2a2a',
+        primaryColor: '#4a5568',
+        primaryTextColor: '#e0e0e0',
+        lineColor: '#718096',
+        edgeLabelBackground: '#2a2a2a'
+      }
+    });
+  </script>
+</body>
+</html>

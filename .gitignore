@@ -24,7 +24,8 @@ dist-ssr/
 .DS_Store
 
 # Local AI / Claude Code settings
-.claude/
+.claude/*
+!.claude/skills/
 .cursor/
 .windsurf/
 
